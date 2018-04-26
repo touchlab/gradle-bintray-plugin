@@ -11,8 +11,6 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import org.gradle.api.artifacts.repositories.MavenArtifactRepository
-import org.gradle.api.internal.Actions
 import org.gradle.api.internal.ClosureBackedAction
 
 class BintrayRepositoriesExtension {
