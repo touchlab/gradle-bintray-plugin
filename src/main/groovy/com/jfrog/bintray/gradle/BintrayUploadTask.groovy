@@ -10,6 +10,7 @@ import org.gradle.api.file.CopySpec
 import org.gradle.api.publish.Publication
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.publish.maven.internal.publication.DefaultMavenPublication
 import org.gradle.api.publish.maven.internal.publication.MavenPublicationInternal
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
@@ -637,9 +638,9 @@ class BintrayUploadTask extends DefaultTask {
             boolean signedArtifact = (it instanceof org.gradle.plugins.signing.Signature)
             def signedExtension = signedArtifact ? it.toSignArtifact.getExtension() : null
             new Artifact(
-                name: identity.artifactId,
-                groupId: identity.groupId,
-                version: identity.version,
+                name: identity.artifactId.get(),
+                groupId: identity.groupId.get(),
+                version: identity.version.get(),
                 extension: it.extension,
                 type: it.extension,
                 classifier: it.classifier,
@@ -648,14 +649,23 @@ class BintrayUploadTask extends DefaultTask {
             )
         }
 
+        /*if (mavenPublication instanceof DefaultMavenPublication
+//                &&
+//                ((DefaultMavenPublication)mavenPublication).canPublishModuleMetadata()
+        ) {
+        */
         def mavenPublication = (MavenPublicationInternal)publication
-        if (mavenPublication.canPublishModuleMetadata()) {
+        if (
+        mavenPublication instanceof DefaultMavenPublication
+//                &&
+//                ((DefaultMavenPublication)mavenPublication).canPublishModuleMetadata()
+        ) {
             def moduleFile = mavenPublication.publishableFiles.find{ it.name == 'module.json'}
             if (moduleFile != null) {
                 artifacts << new Artifact(
-                        name: identity.artifactId,
-                        groupId: identity.groupId,
-                        version: identity.version,
+                        name: identity.artifactId.get(),
+                        groupId: identity.groupId.get(),
+                        version: identity.version.get(),
                         extension: 'module',
                         type: 'module',
                         file: moduleFile
@@ -666,9 +676,9 @@ class BintrayUploadTask extends DefaultTask {
 
         // Add the pom file
         artifacts << new Artifact(
-            name: identity.artifactId,
-            groupId: identity.groupId,
-            version: identity.version,
+            name: identity.artifactId.get(),
+            groupId: identity.groupId.get(),
+            version: identity.version.get(),
             extension: 'pom',
             type: 'pom',
             file: publication.asNormalisedPublication().pomFile

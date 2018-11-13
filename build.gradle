@@ -108,6 +108,11 @@ publishing {
             }
         }
     }
+    repositories {
+        maven {
+            url (project.hasProperty('j2objcMavenDeploy') ? project.property('j2objcMavenDeploy') : 'file://nope/')
+        }
+    }
 }
 
 task createReleasePropertiesFile(type:Exec) {
