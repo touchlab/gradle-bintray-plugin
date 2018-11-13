@@ -3,3 +3,4 @@ gradle-bintray-plugin.ipr
 gradle-bintray-plugin.iws
 gradle.properties
 .idea
+build

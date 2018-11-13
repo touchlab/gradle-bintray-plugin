@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
     }
 }
 
@@ -144,15 +144,19 @@ artifactory {
     }
 }
 
+def ourRepo = "kotlin"
+def ourOrg = "touchlabpublic"
+
 bintray {
     user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
     key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
     publications = ['mavenJava']
     pkg {
-        repo = 'jfrog-jars'
-        userOrg = 'jfrog'
+        repo = ourRepo
+        userOrg = ourOrg
         name = 'gradle-bintray-plugin'
         licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/touchlab/gradle-bintray-plugin'
         version {
             attributes = ['gradle-plugin': 'com.jfrog.bintray:com.jfrog.bintray.gradle:gradle-bintray-plugin']
         }
